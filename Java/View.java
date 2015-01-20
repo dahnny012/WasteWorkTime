@@ -38,6 +38,11 @@ public class View{
     public void addData(Model data){
         this.data = data;
     }
+	
+	public void addBang(){
+        this.data.bangBang += "!";
+    }
+	
     public void addDollar(){
         data.totalMade += 1;
     }

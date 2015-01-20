@@ -28,6 +28,7 @@ public class Model{
     WorkRate workrate;
     int totalMade = 0;
     float timeElapsed = 0;
+	String bangBang = "!";
     public Model(int rate){
         workrate = new WorkRate(rate);
     }

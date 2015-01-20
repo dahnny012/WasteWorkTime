@@ -11,12 +11,13 @@ class Update extends TimerTask{
     View view = View.getInstance();
     public void run() {
         float timeToDollar = view.data.getRate("d");
-        System.out.println("Elapsed " + view.data.timeElapsed);
-        System.out.println("Needed " + timeToDollar);
+        //System.out.println("Elapsed " + view.data.timeElapsed);
+        //System.out.println("Needed " + timeToDollar);
         if(view.data.timeElapsed >= timeToDollar){
             view.data.timeElapsed -= timeToDollar;
             view.addDollar();
-            System.out.println("Made a dollar");
+			view.addBang();
+            System.out.println("Made " + view.data.totalMade + " dollars " + view.data.bangBang);
         }
             view.data.timeElapsed += 1;
     }
