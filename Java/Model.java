@@ -4,6 +4,18 @@ class WorkRate{
     float perHour;
     float dollarRate;
     
+    public WorkRate(float ratePerHour,int salary)
+    {
+        float salaryRate = ratePerHour;
+        if(salary == 1){
+            ratePerHour =  (salaryRate/ 52)/40;
+        }
+        this.perHour = ratePerHour;
+        this.perMinute = ratePerHour/60;
+        this.perSecond = ratePerHour/60*60;
+        this.dollarRate = 3600 / ratePerHour;
+    }
+    
     public WorkRate(float ratePerHour)
     {
         this.perHour = ratePerHour;
@@ -11,7 +23,6 @@ class WorkRate{
         this.perSecond = ratePerHour/60*60;
         this.dollarRate = 3600 / ratePerHour;
     }
-    
     
     public void update(float ratePerHour)
     {
@@ -28,12 +39,14 @@ public class Model{
     WorkRate workrate;
     int totalMade = 0;
     float timeElapsed = 0;
-	String bangBang = "!";
+	String bangBang = "";
+	int type = 0;
     public Model(int rate){
         workrate = new WorkRate(rate);
     }
-    public Model(float rate){
-        workrate = new WorkRate(rate);
+    public Model(float rate,int type){
+        this.type = type;
+        workrate = new WorkRate(rate,type);
     }
     public Model(WorkRate rate)
     {

@@ -10,9 +10,9 @@ import java.util.Scanner;
 class Update extends TimerTask{
     View view = View.getInstance();
     public void run() {
+        if(view.stop)
+            cancel();
         float timeToDollar = view.data.getRate("d");
-        //System.out.println("Elapsed " + view.data.timeElapsed);
-        //System.out.println("Needed " + timeToDollar);
         if(view.data.timeElapsed >= timeToDollar){
             view.data.timeElapsed -= timeToDollar;
             view.addDollar();
@@ -26,7 +26,6 @@ class Update extends TimerTask{
         TimerTask timerTask = new Update();
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(timerTask, 0, 1000); // 0 to 10s
-        System.out.println("TimerTask started");
     }
 }
     
@@ -35,6 +34,7 @@ class Update extends TimerTask{
 
 class Terminal implements Runnable{
     int COMMAND = 0;
+    int RATE  = 1;
     Scanner scan = new Scanner(System.in);
     // Singleton View
     View view = View.getInstance();
@@ -44,14 +44,17 @@ class Terminal implements Runnable{
             String[] buff = req.split(" ");
             switch (buff[COMMAND]){
                 case "display":
-                    System.out.println("Recieved command to display");
                     view.display();
                     break;
                 case "edit":
                     System.out.println("Recieved command to edit");
+                    view.edit(buff[RATE]);
+                    break;
+                case "x":
+                    view.stop();
                     break;
                 default:
-                    System.out.println("Foo" + view.foo);
+                    System.out.println("No valid command");
             }
         }
     }
@@ -68,21 +71,27 @@ public class Controller{
         scan = new Scanner(System.in);
     }
     public int getInput(){
-        int i;
         String num = scan.nextLine();
+        String[]args = num.split(" ");
+        int isSalary = 0;
         try{
-            invalid = false;
-            Model data = new Model(Float.parseFloat(num));
+            if(args[0].equals("salary")){
+                System.out.println("Ok whats your salary hotshot?");
+                num=scan.nextLine();
+                isSalary = 1;
+            }
+            
+            Model data = new Model(Float.parseFloat(num),isSalary);
             view.addData(data);
             Update update = new Update();
-            String[] a = new String[1];
-            update.main(a);
+            update.main(args);
+            invalid = false;
             return 1;
         }
         catch(NumberFormatException e){
-           invalid = true;
-           return -1;
-        }
+          invalid = true;
+            return -1;
+          }
     }
     
     public float calculate(String s){

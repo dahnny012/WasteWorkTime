@@ -19,6 +19,7 @@ public class View{
     MoneyPanel MP;
     int foo = 0;
     private static View view;
+    boolean stop = false;
     private View(){
         EB = new EditButton();
         MP = new MoneyPanel();
@@ -47,7 +48,20 @@ public class View{
         data.totalMade += 1;
     }
     public void display(){
-        System.out.println(data.totalMade);
+        System.out.println("Total made: " + data.totalMade);
+    }
+    public void edit(String rate){
+        try{
+            float num = Float.parseFloat(rate);
+            Model newData = new Model(num,data.type);
+            addData(newData);
+        }
+        catch(NumberFormatException e){
+            System.out.println("Enter a valid rate");
+        }
+    }
+    public void stop(){
+        stop = true;
     }
     
 }
